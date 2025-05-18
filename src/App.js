@@ -1,14 +1,26 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './App.css';
-
 
 function App() {
 
-  const [scores, setScores] = useState([0, 0])
+  const [scores, setScores] = useState([0, 0]);
+  const updateOpacities = () => {
+    const scrObj = [document.getElementsByClassName("score tansa")[0], document.getElementsByClassName("score kac")[0]];
+    if (scores[0] > scores[1]) {
+      scrObj[0].style.opacity = 1
+      scrObj[1].style.opacity = 0.6
+    } else if (scores[1] > scores[0]) {
+      scrObj[1].style.opacity = 1
+      scrObj[0].style.opacity = 0.6
+    } else if (scores[0] === scores[1]) {
+      scrObj[1].style.opacity = 0.6
+      scrObj[0].style.opacity = 0.6
+    }
+  }
+  useEffect(updateOpacities, [scores]);
+
   const [startstop, setStartstop] = useState(0);
-
   const stst = ['START!', 'stop.'];
-
   const toggleS = () => {
     if (startstop) {
       setStartstop(0);
@@ -17,8 +29,31 @@ function App() {
     }
   }
 
-  const handle = () => {
-    return
+  const handleScore = (e) => {
+    e.preventDefault();
+    const club = e.target.name;
+    const act = (e.nativeEvent.submitter.name === "dec") ? 0 : 1;
+    const val = Number(e.target[1].value);
+
+    if (club === "tansa") {
+      var temp = scores[0]
+      if (act) {
+        temp += val
+      } else {
+        temp -= val
+      }
+      setScores([temp, scores[1]])
+    } else if (club === "kac") {
+      var temp = scores[1]
+      if (act) {
+        temp += val
+      } else {
+        temp -= val
+      }
+      setScores([scores[0], temp])
+    }
+
+    e.target[1].value = null
   }
 
 
@@ -49,17 +84,17 @@ function App() {
       <h1>Updaters</h1>
       <div className="updaters">
         <div className="updater">
-          <form action={handle} name="tansa">
-            <button type="submit">-</button>
-            <input type="text" />
-            <button type="submit">+</button>
+          <form onSubmit={handleScore} name="tansa">
+            <button name="dec">-</button>
+            <input type="number" />
+            <button name="inc">+</button>
           </form>
         </div>
         <div className="updater">
-          <form action={handle} name="kac">
-            <button type="submit">-</button>
-            <input type="text" />
-            <button type="submit">+</button>
+          <form onSubmit={handleScore} name="kac">
+            <button name="dec">-</button>
+            <input type="number" />
+            <button name="inc">+</button>
           </form>
         </div>
       </div>

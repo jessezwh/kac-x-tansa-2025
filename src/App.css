@@ -28,7 +28,6 @@ html, body {
   justify-content: center;
   gap: 1.5vh;
   padding: 1.5vh 0;
-  opacity: 60%;
 }
 
 /* scoreboard */
@@ -41,6 +40,7 @@ html, body {
   justify-content: flex-start;
 
   padding-bottom: 5vh;
+  opacity: 60%;
 }
 
 .score > h1 {
