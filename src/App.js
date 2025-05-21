@@ -87,6 +87,14 @@ function App() {
     }
   }, [scores, startstop]);
 
+  const formatTime = (time) => {
+    let hours = String(Math.floor(time / (1000 * 60 * 60))).padStart(2, "0");
+    let minutes = String(Math.floor(time / (1000 * 60) % 60)).padStart(2, "0");
+    let seconds = String(Math.floor(time / (1000) % 60)).padStart(2, "0");
+
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
   return (
     <div className="app">
       <h1>Points</h1>
@@ -103,11 +111,11 @@ function App() {
 
       <h1>Control Time</h1>
       <div className="scorebar">
-        <div className="control tansa">
-          <span>{elapsedTime[0]}</span>
+        <div className="control tansa" style={{flex: elapsedTime[0]}}>
+          <span>{formatTime(elapsedTime[0])}</span>
         </div>
-        <div className="control kac">
-          <span>{elapsedTime[1]}</span>
+        <div className="control kac" style={{flex: elapsedTime[1]}}>
+          <span>{formatTime(elapsedTime[1])}</span>
         </div>
       </div>
 
