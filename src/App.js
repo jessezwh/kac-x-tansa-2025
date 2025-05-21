@@ -17,7 +17,6 @@ function App() {
       scrObj[0].style.opacity = 0.6
     }
   }
-  useEffect(updateOpacities, [scores]);
 
   const [startstop, setStartstop] = useState(0);
   const stst = ['START!', 'stop.'];
@@ -57,6 +56,37 @@ function App() {
   }
 
 
+  const [elapsedTime, setElapsedTime] = useState([0, 0]);
+  const intervalIdRefs = [useRef(null), useRef(null)];
+  const startTimeRefs = [useRef(0), useRef(0)];
+
+  const updateTimer = () => {
+    if (startstop) {
+      var lead;
+      if (scores[0] > scores[1]) {  //tansa
+        startTimeRefs[0].current = Date.now() - elapsedTime[0]
+        intervalIdRefs[0].current = setInterval(() => {
+          setElapsedTime([Date.now() - startTimeRefs[0].current, elapsedTime[1]])
+        }, 10)
+      } else if (scores[1] > scores[0]) {  //kac
+        startTimeRefs[1].current = Date.now() - elapsedTime[1]
+        intervalIdRefs[1].current = setInterval(() => {
+          setElapsedTime([elapsedTime[0], Date.now() - startTimeRefs[1].current])
+        }, 10)
+      } 
+
+    }
+  }
+
+  useEffect(() => {
+    updateOpacities();
+    updateTimer();
+    return () => {
+        clearInterval(intervalIdRefs[0].current);
+        clearInterval(intervalIdRefs[1].current);
+    }
+  }, [scores, startstop]);
+
   return (
     <div className="app">
       <h1>Points</h1>
@@ -74,10 +104,10 @@ function App() {
       <h1>Control Time</h1>
       <div className="scorebar">
         <div className="control tansa">
-          <span>0s</span>
+          <span>{elapsedTime[0]}</span>
         </div>
         <div className="control kac">
-          <span>0s</span>
+          <span>{elapsedTime[1]}</span>
         </div>
       </div>
 
