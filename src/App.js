@@ -110,11 +110,11 @@ function App() {
       </div>
 
       <h1>Control Time</h1>
-      <div className="scorebar">
-        <div className="control tansa" style={{flex: elapsedTime[0]}}>
+      <div className="scorebar" style={{opacity: (startstop ? 1 : 0.6)}}>
+        <div className="control tansa" style={{flex: (elapsedTime[0] < 1 ? 1 : elapsedTime[0])}}>
           <span>{formatTime(elapsedTime[0])}</span>
         </div>
-        <div className="control kac" style={{flex: elapsedTime[1]}}>
+        <div className="control kac" style={{flex: (elapsedTime[1] < 1 ? 1 : elapsedTime[1])}}>
           <span>{formatTime(elapsedTime[1])}</span>
         </div>
       </div>
@@ -138,7 +138,7 @@ function App() {
       </div>
 
       <div className="start">
-        <button onClick={toggleS}>{stst[startstop]}</button>
+        <button onClick={toggleS} style={{backgroundColor: (!startstop ? "#7fde3c" : "#de3c3c")}}>{stst[startstop]}</button>
       </div>
     </div>   
   );
